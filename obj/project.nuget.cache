@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "dgSpecHash": "MtKjUtrSerQTcyon68CkYCK0NrhzXf/EaCgMxB7IsWs7qelsAFYqPe9VhBpv71czn1Y8Qm90vzc1E/v1hCn87g==",
+  "success": true,
+  "projectFilePath": "C:\\Development\\Request & Serve Api Projects\\apiRequest\\apiRequest.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\keone\\.nuget\\packages\\elasticsearch.net\\7.9.0\\elasticsearch.net.7.9.0.nupkg.sha512",
+    "C:\\Users\\keone\\.nuget\\packages\\microsoft.csharp\\4.6.0\\microsoft.csharp.4.6.0.nupkg.sha512",
+    "C:\\Users\\keone\\.nuget\\packages\\nest\\7.9.0\\nest.7.9.0.nupkg.sha512",
+    "C:\\Users\\keone\\.nuget\\packages\\nest.jsonnetserializer\\7.9.0\\nest.jsonnetserializer.7.9.0.nupkg.sha512",
+    "C:\\Users\\keone\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
+    "C:\\Users\\keone\\.nuget\\packages\\restsharp\\106.11.7\\restsharp.106.11.7.nupkg.sha512",
+    "C:\\Users\\keone\\.nuget\\packages\\system.buffers\\4.5.0\\system.buffers.4.5.0.nupkg.sha512",
+    "C:\\Users\\keone\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.5.1\\system.diagnostics.diagnosticsource.4.5.1.nupkg.sha512"
+  ],
+  "logs": []
+}
