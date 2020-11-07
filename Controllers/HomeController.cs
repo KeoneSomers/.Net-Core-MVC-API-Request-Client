@@ -6,84 +6,69 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using apiRequest.Models;
-using apiRequest.Helpers;
 using System.Net.Http;
 using Newtonsoft.Json;
 using RestSharp;
+using apiRequest.Helpers;
+using System.Net;
 
 namespace apiRequest.Controllers
 {
     public class HomeController : Controller
     {
         StudentAPI _api = new StudentAPI();
-
-        public async Task<IActionResult> Index()
+        
+        // PULL DATA FROM API (Using NuGet Package: RestSharp to simplfy things)
+        protected List<StudentData> GetStudentData()
         {
-            // List<StudentData> students = new List<StudentData>();
-            // HttpClient client = _api.Initial();
-            // HttpResponseMessage res = await client.GetAsync("api/student");
-            // if (res.IsSuccessStatusCode)
-            // {
-            //     var results = res.Content.ReadAsStringAsync().Result;
-            //     students = JsonConvert.DeserializeObject<List<StudentData>>(results);
-            // }
+            var client = new RestClient("https://localhost:6001");
+            // Allow self signed certificates through if in Dev mode
+            client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
+            var request = new RestRequest("api/student", Method.GET);
+            request.AddHeader("Content-Type", "application/json; charset=utf-8");
+            var response = client.Execute<List<StudentData>>(request);
+            return response.Data;
+        }
+
+        // GET - INDEX
+        public IActionResult Index()
+        {
             var students = GetStudentData();
             return View(students);
         }
 
-        protected List<StudentData> GetStudentData()
+        // GET - CREATE
+        public IActionResult Create()
         {
-            var client = new RestClient("https://localhost:6001");
+            return View();
+        }
 
-            // Allow self signed certificates through if in Dev mode
-            if (true)
-                client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
+        // POST - CREATE (Send data back to api in the body of the response)
+        [HttpPost]
+        public IActionResult Create(StudentData student)
+        {
+            HttpClient client = _api.Initial(); // maybe should rename this to GetClient() rather than Initial()...
 
-            var request = new RestRequest("api/student", Method.GET);
+            var postTask = client.PostAsJsonAsync<StudentData>("api/student", student);   
 
-            request.AddHeader("Content-Type", "application/json; charset=utf-8");
+            postTask.Wait();
+            // if having trouble with ssl certificate use this...
+            // dotnet dev-certs https --trust
 
-            // request.AddParameter("pageIndex", search.PageNumber);
-            // request.AddParameter("pageSize", search.PageSize);
-            // request.AddParameter("sortOrder", search.SortOrder);
-            // request.AddParameter("ascend", search.Ascend);
-            // request.AddParameter("searchTerm", search.SearchTerm);
-            // request.AddParameter("companies", search.Filters.GetSearchFilter("company"));
-            // request.AddParameter("tails", search.Filters.GetSearchFilter("tail"));
-
-            var response = client.Execute<List<StudentData>>(request);
-
-            if (!response.IsSuccessful)
+            var result = postTask.Result;
+            if (result.IsSuccessStatusCode)
             {
-                var respUri = client.BuildUri(request);
-                var failedMessage = $"Failed to get GX SIU Log summaries {respUri}";
-                // _logger.Error(failedMessage,
-                //     new
-                //     {
-                //         HttpStatusCode = response.StatusCode,
-                //         HttpErrorMessage = response.ErrorMessage,
-                //         response.Content,
-                //         response.ErrorMessage,
-                //         Request=request
-                //     });
-                
-                throw new Exception(failedMessage);
+                return RedirectToAction("Index");
             }
 
-            return response.Data;
+            return View();
         }
 
 
 
 
 
-
-
-
-
-
-
-
+        // ERROR
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

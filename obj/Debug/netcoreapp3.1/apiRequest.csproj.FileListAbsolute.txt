@@ -39,3 +39,6 @@ C:\Development\Request & Serve Api Projects\apiRequest\bin\Debug\netcoreapp3.1\E
 C:\Development\Request & Serve Api Projects\apiRequest\bin\Debug\netcoreapp3.1\Nest.dll
 C:\Development\Request & Serve Api Projects\apiRequest\bin\Debug\netcoreapp3.1\Nest.JsonNetSerializer.dll
 C:\Development\Request & Serve Api Projects\apiRequest\bin\Debug\netcoreapp3.1\RestSharp.dll
+C:\Development\Request & Serve Api Projects\apiRequest\bin\Debug\netcoreapp3.1\System.Net.Http.Formatting.dll
+C:\Development\Request & Serve Api Projects\apiRequest\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
+C:\Development\Request & Serve Api Projects\apiRequest\obj\Debug\netcoreapp3.1\Razor\Views\Home\Create.cshtml.g.cs
