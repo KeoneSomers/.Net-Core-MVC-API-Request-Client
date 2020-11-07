@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using apiRequest.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
-using RestSharp;
 using apiRequest.Helpers;
 using System.Net;
 
@@ -17,23 +16,20 @@ namespace apiRequest.Controllers
     public class HomeController : Controller
     {
         StudentAPI _api = new StudentAPI();
-        
-        // PULL DATA FROM API (Using NuGet Package: RestSharp to simplfy things)
-        protected List<StudentData> GetStudentData()
-        {
-            var client = new RestClient("https://localhost:6001");
-            // Allow self signed certificates through if in Dev mode
-            client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-            var request = new RestRequest("api/student", Method.GET);
-            request.AddHeader("Content-Type", "application/json; charset=utf-8");
-            var response = client.Execute<List<StudentData>>(request);
-            return response.Data;
-        }
 
         // GET - INDEX
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var students = GetStudentData();
+            List<StudentData> students = new List<StudentData>();
+            HttpClient client = _api.Initial();
+            HttpResponseMessage res = await client.GetAsync("api/student");
+
+            if (res.IsSuccessStatusCode)
+            {
+                var results = res.Content.ReadAsStringAsync().Result;
+                students = JsonConvert.DeserializeObject<List<StudentData>>(results);
+            }
+
             return View(students);
         }
 
