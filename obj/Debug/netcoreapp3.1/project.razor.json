@@ -14392,18 +14392,8 @@
   "RootNamespace": "apiRequest",
   "Documents": [
     {
-      "FilePath": "c:\\Development\\Request & Serve Api Projects\\apiRequest\\Views\\Shared\\Error.cshtml",
-      "TargetPath": "Views\\Shared\\Error.cshtml",
-      "FileKind": "mvc"
-    },
-    {
       "FilePath": "c:\\Development\\Request & Serve Api Projects\\apiRequest\\Views\\Home\\Create.cshtml",
       "TargetPath": "Views\\Home\\Create.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Development\\Request & Serve Api Projects\\apiRequest\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
-      "TargetPath": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
       "FileKind": "mvc"
     },
     {

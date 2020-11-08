@@ -8,37 +8,48 @@ using Microsoft.Extensions.Logging;
 using apiRequest.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
-using apiRequest.Helpers;
 using System.Net;
 
 namespace apiRequest.Controllers
 {
     public class HomeController : Controller
     {
-        StudentAPI _api = new StudentAPI();
+        // API CONNECTION ----------------------------------------------------------
+        public HttpClient APIclientConnection()
+        {
+            var APIclient = new HttpClient();
+            APIclient.BaseAddress = new Uri("https://localhost:6001");
 
-        // GET - INDEX
+            return APIclient;
+        }
+        // -------------------------------------------------------------------------
+
+
+
+        // GET - INDEX -------------------------------------------------------------
         public async Task<IActionResult> Index()
         {
             List<StudentData> students = new List<StudentData>();
-            HttpClient client = _api.Initial();
-            HttpResponseMessage res = await client.GetAsync("api/student");
+            HttpClient client = APIclientConnection();
+            HttpResponseMessage apiResponse = await client.GetAsync("api/StudentController/getAll");
 
-            if (res.IsSuccessStatusCode)
+            if (apiResponse.IsSuccessStatusCode)
             {
-                var results = res.Content.ReadAsStringAsync().Result;
+                var results = apiResponse.Content.ReadAsStringAsync().Result;
                 students = JsonConvert.DeserializeObject<List<StudentData>>(results);
             }
 
             return View(students);
         }
 
-        // GET - DETAILS
+
+
+        // GET - DETAILS --------------------------------------------------------------
         public async Task<IActionResult> Details(int Id)
         {
             var student = new StudentData();
-            HttpClient client = _api.Initial();
-            HttpResponseMessage response = await client.GetAsync($"api/student/{Id}");
+            HttpClient client = APIclientConnection();
+            HttpResponseMessage response = await client.GetAsync($"api/StudentController/GetSingle/{Id}");
             if (response.IsSuccessStatusCode)
             {
                 var results = response.Content.ReadAsStringAsync().Result;
@@ -47,26 +58,29 @@ namespace apiRequest.Controllers
             return View(student);
         }
 
-        // GET - CREATE
+
+
+
+        // GET - CREATE --------------------------------------------------------------
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST - CREATE (Send data back to api in the body of the response)
+
+
+
+        // POST - CREATE ----------------------------------------------------------------------
         [HttpPost]
         public IActionResult Create(StudentData student)
         {
-            HttpClient client = _api.Initial(); // maybe should rename this to GetClient() rather than Initial()...
+            HttpClient client = APIclientConnection();
 
-            var postTask = client.PostAsJsonAsync<StudentData>("api/student", student);   
+            var postTask = client.PostAsJsonAsync<StudentData>("api/StudentController/Create", student);
 
-            postTask.Wait();
-            // if having trouble with ssl certificate use this...
-            // dotnet dev-certs https --trust
+            postTask.Wait(); // need to rename this!
 
-            var result = postTask.Result;
-            if (result.IsSuccessStatusCode)
+            if (postTask.Result.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
             }
@@ -74,24 +88,18 @@ namespace apiRequest.Controllers
             return View();
         }
 
-        // GET - Delete
+
+
+        // GET - DELETE --------------------------------------------------------------------------------
         public async Task<IActionResult> Delete(int Id)
         {
             var student = new StudentData();
-            HttpClient client = _api.Initial();
-            HttpResponseMessage response = await client.DeleteAsync($"api/student/{Id}");
+            HttpClient client = APIclientConnection();
+            HttpResponseMessage response = await client.DeleteAsync($"api/StudentController/Delete/{Id}");
             return RedirectToAction("Index");
         }
 
 
 
-
-
-        // ERROR
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }
