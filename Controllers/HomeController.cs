@@ -74,6 +74,15 @@ namespace apiRequest.Controllers
             return View();
         }
 
+        // GET - Delete
+        public async Task<IActionResult> Delete(int Id)
+        {
+            var student = new StudentData();
+            HttpClient client = _api.Initial();
+            HttpResponseMessage response = await client.DeleteAsync($"api/student/{Id}");
+            return RedirectToAction("Index");
+        }
+
 
 
 
