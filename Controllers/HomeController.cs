@@ -14,26 +14,26 @@ namespace apiRequest.Controllers
 {
     public class HomeController : Controller
     {
-        // API CONNECTION ----------------------------------------------------------
-        public HttpClient APIclientConnection()
+        // API CONNECTION -------------------------------------------------------------------------------------
+        public HttpClient apiConnection()
         {
             var APIclient = new HttpClient();
             APIclient.BaseAddress = new Uri("https://localhost:6001");
 
             return APIclient;
         }
-        // -------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------------------
 
 
 
 
 
 
-        // INDEX (Get) -------------------------------------------------------------
+        // INDEX (Get) ----------------------------------------------------------------------------------------
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            HttpResponseMessage apiResponse = await APIclientConnection().GetAsync("api/StudentController/getAll");
+            HttpResponseMessage apiResponse = await apiConnection().GetAsync("api/StudentController/getAll");
 
             List<StudentModel> listOfStudents = new List<StudentModel>();
             if (apiResponse.IsSuccessStatusCode)
@@ -47,11 +47,11 @@ namespace apiRequest.Controllers
 
 
 
-        // DETAILS (Get) --------------------------------------------------------------
+        // DETAILS (Get) --------------------------------------------------------------------------------------
         [HttpGet]
         public async Task<IActionResult> Details(int Id)
         {
-            HttpResponseMessage response = await APIclientConnection().GetAsync($"api/StudentController/GetSingle/{Id}");
+            HttpResponseMessage response = await apiConnection().GetAsync($"api/StudentController/GetSingle/{Id}");
 
             var student = new StudentModel();
             if (response.IsSuccessStatusCode)
@@ -70,7 +70,7 @@ namespace apiRequest.Controllers
         public async Task<IActionResult> Delete(int Id)
         {
             // ask the api to delete the student
-            HttpResponseMessage response = await APIclientConnection().DeleteAsync($"api/StudentController/Delete/{Id}");
+            HttpResponseMessage response = await apiConnection().DeleteAsync($"api/StudentController/Delete/{Id}");
 
             return RedirectToAction("Index");
         }
@@ -91,7 +91,7 @@ namespace apiRequest.Controllers
         public IActionResult Create(StudentModel newStudent)
         {
             // Ask the Api's create method to save our json data to it's database
-            var apiPostRequest = APIclientConnection().PostAsJsonAsync<StudentModel>("api/StudentController/Create", newStudent);
+            var apiPostRequest = apiConnection().PostAsJsonAsync<StudentModel>("api/StudentController/Create", newStudent);
             apiPostRequest.Wait();
 
             // if success
