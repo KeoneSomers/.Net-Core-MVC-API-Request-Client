@@ -5,6 +5,9 @@
 <ul>
     @foreach (var item in Model)
     {
-        <li>@Html.DisplayFor(modelItem => item.Name)</li>
+        <li>
+            @Html.DisplayFor(modelItem => item.Name)
+            @Html.ActionLink("Details", "Details", new {id=item.Id})
+        </li>
     }
 </ul>

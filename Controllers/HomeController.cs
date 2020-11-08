@@ -33,6 +33,20 @@ namespace apiRequest.Controllers
             return View(students);
         }
 
+        // GET - DETAILS
+        public async Task<IActionResult> Details(int Id)
+        {
+            var student = new StudentData();
+            HttpClient client = _api.Initial();
+            HttpResponseMessage response = await client.GetAsync($"api/student/{Id}");
+            if (response.IsSuccessStatusCode)
+            {
+                var results = response.Content.ReadAsStringAsync().Result;
+                student = JsonConvert.DeserializeObject<StudentData>(results);
+            }
+            return View(student);
+        }
+
         // GET - CREATE
         public IActionResult Create()
         {
