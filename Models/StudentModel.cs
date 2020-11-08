@@ -1,6 +1,6 @@
 namespace apiRequest.Models
 {
-    public class StudentData
+    public class StudentModel
     {
         public int Id { get; set; }
         

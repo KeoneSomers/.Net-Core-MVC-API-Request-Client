@@ -26,17 +26,20 @@ namespace apiRequest.Controllers
 
 
 
-        // GET - INDEX -------------------------------------------------------------
+
+
+
+        // INDEX (Get) -------------------------------------------------------------
         public async Task<IActionResult> Index()
         {
-            List<StudentData> students = new List<StudentData>();
+            List<StudentModel> students = new List<StudentModel>();
             HttpClient client = APIclientConnection();
             HttpResponseMessage apiResponse = await client.GetAsync("api/StudentController/getAll");
 
             if (apiResponse.IsSuccessStatusCode)
             {
                 var results = apiResponse.Content.ReadAsStringAsync().Result;
-                students = JsonConvert.DeserializeObject<List<StudentData>>(results);
+                students = JsonConvert.DeserializeObject<List<StudentModel>>(results);
             }
 
             return View(students);
@@ -44,24 +47,34 @@ namespace apiRequest.Controllers
 
 
 
-        // GET - DETAILS --------------------------------------------------------------
+        // DETAILS (Get) --------------------------------------------------------------
         public async Task<IActionResult> Details(int Id)
         {
-            var student = new StudentData();
+            var student = new StudentModel();
             HttpClient client = APIclientConnection();
             HttpResponseMessage response = await client.GetAsync($"api/StudentController/GetSingle/{Id}");
             if (response.IsSuccessStatusCode)
             {
                 var results = response.Content.ReadAsStringAsync().Result;
-                student = JsonConvert.DeserializeObject<StudentData>(results);
+                student = JsonConvert.DeserializeObject<StudentModel>(results);
             }
             return View(student);
         }
 
 
 
+        // DELETE (Get) --------------------------------------------------------------------------------
+        public async Task<IActionResult> Delete(int Id)
+        {
+            var student = new StudentModel();
+            HttpClient client = APIclientConnection();
+            HttpResponseMessage response = await client.DeleteAsync($"api/StudentController/Delete/{Id}");
+            return RedirectToAction("Index");
+        }
 
-        // GET - CREATE --------------------------------------------------------------
+
+
+        // CREATE (Get) --------------------------------------------------------------
         public IActionResult Create()
         {
             return View();
@@ -69,34 +82,19 @@ namespace apiRequest.Controllers
 
 
 
-
-        // POST - CREATE ----------------------------------------------------------------------
+        // CREATE (Post) ----------------------------------------------------------------------
         [HttpPost]
-        public IActionResult Create(StudentData student)
+        public IActionResult Create(StudentModel newStudent)
         {
-            HttpClient client = APIclientConnection();
+            // Ask the Api create method to save our json data to it's database
+            var apiPostRequest = APIclientConnection().PostAsJsonAsync<StudentModel>("api/StudentController/Create", newStudent);
+            apiPostRequest.Wait();
 
-            var postTask = client.PostAsJsonAsync<StudentData>("api/StudentController/Create", student);
+            // if success
+            if (apiPostRequest.Result.IsSuccessStatusCode) {return RedirectToAction("Index");}
 
-            postTask.Wait(); // need to rename this!
-
-            if (postTask.Result.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index");
-            }
-
+            // if fail
             return View();
-        }
-
-
-
-        // GET - DELETE --------------------------------------------------------------------------------
-        public async Task<IActionResult> Delete(int Id)
-        {
-            var student = new StudentData();
-            HttpClient client = APIclientConnection();
-            HttpResponseMessage response = await client.DeleteAsync($"api/StudentController/Delete/{Id}");
-            return RedirectToAction("Index");
         }
 
 
