@@ -30,6 +30,7 @@ namespace apiRequest.Controllers
 
 
         // INDEX (Get) -------------------------------------------------------------
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             List<StudentModel> students = new List<StudentModel>();
@@ -48,33 +49,37 @@ namespace apiRequest.Controllers
 
 
         // DETAILS (Get) --------------------------------------------------------------
+        [HttpGet]
         public async Task<IActionResult> Details(int Id)
         {
+            HttpResponseMessage response = await APIclientConnection().GetAsync($"api/StudentController/GetSingle/{Id}");
+
             var student = new StudentModel();
-            HttpClient client = APIclientConnection();
-            HttpResponseMessage response = await client.GetAsync($"api/StudentController/GetSingle/{Id}");
             if (response.IsSuccessStatusCode)
             {
-                var results = response.Content.ReadAsStringAsync().Result;
-                student = JsonConvert.DeserializeObject<StudentModel>(results);
+                var result = response.Content.ReadAsStringAsync().Result;
+                student = JsonConvert.DeserializeObject<StudentModel>(result);
             }
+
             return View(student);
         }
 
 
 
         // DELETE (Get) --------------------------------------------------------------------------------
+        [HttpGet]
         public async Task<IActionResult> Delete(int Id)
         {
-            var student = new StudentModel();
-            HttpClient client = APIclientConnection();
-            HttpResponseMessage response = await client.DeleteAsync($"api/StudentController/Delete/{Id}");
+            // ask the api to delete the student
+            HttpResponseMessage response = await APIclientConnection().DeleteAsync($"api/StudentController/Delete/{Id}");
+
             return RedirectToAction("Index");
         }
 
 
 
         // CREATE (Get) --------------------------------------------------------------
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
@@ -86,7 +91,7 @@ namespace apiRequest.Controllers
         [HttpPost]
         public IActionResult Create(StudentModel newStudent)
         {
-            // Ask the Api create method to save our json data to it's database
+            // Ask the Api's create method to save our json data to it's database
             var apiPostRequest = APIclientConnection().PostAsJsonAsync<StudentModel>("api/StudentController/Create", newStudent);
             apiPostRequest.Wait();
 
