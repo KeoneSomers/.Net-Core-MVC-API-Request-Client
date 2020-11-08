@@ -33,17 +33,16 @@ namespace apiRequest.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            List<StudentModel> students = new List<StudentModel>();
-            HttpClient client = APIclientConnection();
-            HttpResponseMessage apiResponse = await client.GetAsync("api/StudentController/getAll");
+            HttpResponseMessage apiResponse = await APIclientConnection().GetAsync("api/StudentController/getAll");
 
+            List<StudentModel> listOfStudents = new List<StudentModel>();
             if (apiResponse.IsSuccessStatusCode)
             {
-                var results = apiResponse.Content.ReadAsStringAsync().Result;
-                students = JsonConvert.DeserializeObject<List<StudentModel>>(results);
+                var result = apiResponse.Content.ReadAsStringAsync().Result;
+                listOfStudents = JsonConvert.DeserializeObject<List<StudentModel>>(result);
             }
 
-            return View(students);
+            return View(listOfStudents);
         }
 
 
