@@ -131,8 +131,6 @@ namespace apiRequest.Controllers
         [HttpPost]
         public ActionResult Edit(StudentModel student)
         {
-            // var Id = student.Id;
-
             var putTask = apiConnection().PutAsJsonAsync<StudentModel>($"api/StudentController/Edit", student);
             putTask.Wait();
 
