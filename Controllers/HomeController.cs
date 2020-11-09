@@ -91,11 +91,11 @@ namespace apiRequest.Controllers
         public IActionResult Create(StudentModel newStudent)
         {
             // Ask the Api's create method to save our json data to it's database
-            var apiPostRequest = apiConnection().PostAsJsonAsync<StudentModel>("api/StudentController/Create", newStudent);
-            apiPostRequest.Wait();
+            var postToApiTask = apiConnection().PostAsJsonAsync<StudentModel>("api/StudentController/Create", newStudent);
+            postToApiTask.Wait();
 
             // if success
-            if (apiPostRequest.Result.IsSuccessStatusCode) {return RedirectToAction("Index");}
+            if (postToApiTask.Result.IsSuccessStatusCode) {return RedirectToAction("Index");}
 
             // if fail
             return View();
@@ -103,13 +103,7 @@ namespace apiRequest.Controllers
 
 
 
-
-
-
-
-
-        // ----------------------------------------------
-        // get - edit
+        // EDIT (Get) -------------------------------------------------------------------------
         [HttpGet]
         public async Task<IActionResult> Edit(int Id)
         {
@@ -127,14 +121,14 @@ namespace apiRequest.Controllers
 
 
 
-        // post - edit
+        // EDIT (Post) --------------------------------------------------------------------------
         [HttpPost]
         public ActionResult Edit(StudentModel student)
         {
-            var putTask = apiConnection().PutAsJsonAsync<StudentModel>($"api/StudentController/Edit", student);
-            putTask.Wait();
+            var putToApiTask = apiConnection().PutAsJsonAsync<StudentModel>($"api/StudentController/Edit", student);
+            putToApiTask.Wait();
 
-            var result = putTask.Result;
+            var result = putToApiTask.Result;
             if (result.IsSuccessStatusCode)
             {
 
@@ -143,6 +137,7 @@ namespace apiRequest.Controllers
 
             return View(student);
         }
+
 
 
     }
