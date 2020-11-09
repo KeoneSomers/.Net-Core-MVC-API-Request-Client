@@ -103,5 +103,49 @@ namespace apiRequest.Controllers
 
 
 
+
+
+
+
+
+        // ----------------------------------------------
+        // get - edit
+        [HttpGet]
+        public async Task<IActionResult> Edit(int Id)
+        {
+            HttpResponseMessage response = await apiConnection().GetAsync($"api/StudentController/GetSingle/{Id}");
+
+            var student = new StudentModel();
+            if (response.IsSuccessStatusCode)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+                student = JsonConvert.DeserializeObject<StudentModel>(result);
+            }
+
+            return View(student);
+        }
+
+
+
+        // post - edit
+        [HttpPost]
+        public ActionResult Edit(StudentModel student)
+        {
+            // var Id = student.Id;
+
+            var putTask = apiConnection().PutAsJsonAsync<StudentModel>($"api/StudentController/Edit", student);
+            putTask.Wait();
+
+            var result = putTask.Result;
+            if (result.IsSuccessStatusCode)
+            {
+
+                return RedirectToAction("Index");
+            }
+
+            return View(student);
+        }
+
+
     }
 }

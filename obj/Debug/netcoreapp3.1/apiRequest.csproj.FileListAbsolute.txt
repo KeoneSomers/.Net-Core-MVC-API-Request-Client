@@ -41,3 +41,4 @@ C:\Development\Request & Serve Api Projects\apiRequest\bin\Debug\netcoreapp3.1\S
 C:\Development\Request & Serve Api Projects\apiRequest\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
 C:\Development\Request & Serve Api Projects\apiRequest\obj\Debug\netcoreapp3.1\Razor\Views\Home\Create.cshtml.g.cs
 C:\Development\Request & Serve Api Projects\apiRequest\obj\Debug\netcoreapp3.1\Razor\Views\Home\Details.cshtml.g.cs
+C:\Development\Request & Serve Api Projects\apiRequest\obj\Debug\netcoreapp3.1\Razor\Views\Home\Edit.cshtml.g.cs
