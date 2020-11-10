@@ -5,6 +5,3 @@
 !.vscode/extensions.json
 *.code-workspace
 .history/
-
-bin/*
-obj/*
