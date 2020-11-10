@@ -123,7 +123,7 @@ namespace apiRequest.Controllers
 
         // EDIT (Post) --------------------------------------------------------------------------
         [HttpPost]
-        public ActionResult Edit(StudentModel student)
+        public IActionResult Edit(StudentModel student)
         {
             var putToApiTask = apiConnection().PutAsJsonAsync<StudentModel>($"api/StudentController/Edit", student);
             putToApiTask.Wait();
