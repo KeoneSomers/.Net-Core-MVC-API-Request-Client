@@ -69,7 +69,6 @@ namespace apiRequest.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int Id)
         {
-            // ask the api to delete the student
             HttpResponseMessage response = await apiConnection().DeleteAsync($"api/StudentController/Delete/{Id}");
 
             return RedirectToAction("Index");
