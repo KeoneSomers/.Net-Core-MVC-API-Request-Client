@@ -9,3 +9,11 @@
 
 
 obj/Debug/netcoreapp3.1/apiRequest.csprojAssemblyReference.cache
+bin/Debug/netcoreapp3.1/apiRequest.dll
+bin/Debug/netcoreapp3.1/apiRequest.pdb
+bin/Debug/netcoreapp3.1/apiRequest.Views.dll
+bin/Debug/netcoreapp3.1/apiRequest.Views.pdb
+obj/Debug/netcoreapp3.1/apiRequest.dll
+obj/Debug/netcoreapp3.1/apiRequest.pdb
+obj/Debug/netcoreapp3.1/apiRequest.Views.dll
+obj/Debug/netcoreapp3.1/apiRequest.Views.pdb
